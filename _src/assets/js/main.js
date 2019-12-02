@@ -30,8 +30,6 @@ function createListMovies(list) {
 
 }
 
-
-
 //This function paint the movies
 function paintMovies() {
   let htmlContent = '';
@@ -46,6 +44,18 @@ function paintMovies() {
   console.log(movies);
 
 }
+//This function is to check if the movie is favorite
+function toggleFavorites(ev) {
+  //const clickedId = parseInt(ev.currentTarget.id);
+}
+
+//This function is going to listen in case you click a movie
+function listenMovies() {
+  const moviesItems = document.querySelectorAll('.movies__item');
+  for (const moviesItem of moviesItems) {
+    moviesItem.addEventListener('click', toggleFavorites);
+  }
+}
 
 //function of Server Data
 function getServerData() {
@@ -57,7 +67,7 @@ function getServerData() {
     .then(function (getShow) {
       createListMovies(getShow);
       paintMovies();
-      console.log('Recogiendo movies:' + movies);
+      listenMovies();
     })
     .catch(function (err) {
       console.log('Error al traer los datos del servidor', err);
