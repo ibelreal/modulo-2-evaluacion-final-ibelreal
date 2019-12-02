@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
 //HTML & constants
@@ -6,7 +7,7 @@ const listMovies = document.querySelector('.js-list-movies');
 const searcher = document.querySelector('#searcher');
 let movies = [];
 let moviesFavorites = [];
-let htmlContent = '';
+
 
 //This function add the information of JSON to an Array
 function createListMovies(list) {
@@ -33,6 +34,15 @@ function createListMovies(list) {
 
 //This function paint the movies
 function paintMovies() {
+  let htmlContent = '';
+
+  for (let i = 0; i < movies.length; i++) {
+    htmlContent += `<li class="movies__item" id="${[i]}">`;
+    htmlContent += `<img src="${movies[i].image}">`;
+    htmlContent += `<h3 class="movies__name">${movies[i].name}</h3>`;
+    htmlContent += '</li>';
+  }
+  listMovies.innerHTML = htmlContent;
   console.log(movies);
 
 }
