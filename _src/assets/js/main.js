@@ -8,8 +8,21 @@ const listShows = document.querySelector('.js-list-shows');
 const listFavorites = document.querySelector('.js-list-favorites');
 const searcher = document.querySelector('#searcher');
 let shows = [];
-let showsFavorites = [];
+let favoritesShows = [];
 
+
+//Local storage function
+function setLocalStorage() {
+  localStorage.setItem('favoritesShows', JSON.stringify(favoritesShows));
+}
+
+function getLocalStorage() {
+  const localStorageFavorites = JSON.parse(localStorage.getItem('favoritesShows'));
+  if (localStorageFavorites !== null) {
+    favoritesShows = localStorageFavorites;
+    paintshows();
+  }
+}
 
 //This function add the information of JSON to an Array
 function createListshows(list) {
@@ -29,15 +42,15 @@ function createListshows(list) {
   }
 }
 
-//This function paint the shows
+//This function paint the shows and favorites
 function paintshows() {
   let htmlContent = '';
   let htmlFavorites = '';
-  for (let i = 0; i < showsFavorites.length; i++) {
+  for (let i = 0; i < favoritesShows.length; i++) {
     htmlFavorites += `<li class="shows__item__fav" id="${[i]}">`;
     htmlFavorites += `<div class="shows__container__fav">`;
-    htmlFavorites += `<img class="shows__container__fav--img" src="${showsFavorites[i].image}" title="${showsFavorites[i].name}" alt="${showsFavorites[i].name}">`;
-    htmlFavorites += `<h3 class="shows__container__fav--name">${showsFavorites[i].name}</h3>`;
+    htmlFavorites += `<img class="shows__container__fav--img" src="${favoritesShows[i].image}" title="${favoritesShows[i].name}" alt="${favoritesShows[i].name}">`;
+    htmlFavorites += `<h3 class="shows__container__fav--name">${favoritesShows[i].name}</h3>`;
     htmlFavorites += `</div>`;
     htmlFavorites += `</li>`;
   }
@@ -57,21 +70,21 @@ function paintshows() {
 function toggleFavorites(ev) {
   let findFav = false;
   const clickedId = parseInt(ev.currentTarget.id);
-  if (showsFavorites.length === 0) {
-    showsFavorites.push({ id: 0, image: `${shows[clickedId].image}`, name: `${shows[clickedId].name}` });
+  if (favoritesShows.length === 0) {
+    favoritesShows.push({ id: 0, image: `${shows[clickedId].image}`, name: `${shows[clickedId].name}` });
   }
-
   else {
-    for (let i = 0; i < showsFavorites.length; i++) {
-      if (shows[clickedId].name === showsFavorites[i].name) {
-        showsFavorites.splice(i, 1);
+    for (let i = 0; i < favoritesShows.length; i++) {
+      if (shows[clickedId].name === favoritesShows[i].name) {
+        favoritesShows.splice(i, 1);
         findFav = true;
       }
     }
     if (findFav === false) {
-      showsFavorites.push({ id: showsFavorites.length, image: `${shows[clickedId].image}`, name: `${shows[clickedId].name}` });
+      favoritesShows.push({ id: favoritesShows.length, image: `${shows[clickedId].image}`, name: `${shows[clickedId].name}` });
     }
   }
+  setLocalStorage();
   paintshows();
   listenshows();
 }
@@ -87,7 +100,6 @@ function listenshows() {
 
 //function of Server Data
 function getServerData() {
-
   fetch(`https://api.tvmaze.com/search/shows?q=${searcher.value}`)
     .then(function (response) {
       return response.json();
@@ -102,10 +114,13 @@ function getServerData() {
     });
 }
 
+// Handler function
 function handler(e) {
   e.preventDefault();
   getServerData();
 }
+
+getLocalStorage();
 
 //Event listener of button
 btn.addEventListener('click', handler);
