@@ -38,9 +38,11 @@ function paintMovies() {
 
   for (let i = 0; i < movies.length; i++) {
     htmlContent += `<li class="movies__item" id="${[i]}">`;
-    htmlContent += `<img src="${movies[i].image}">`;
-    htmlContent += `<h3 class="movies__name">${movies[i].name}</h3>`;
-    htmlContent += '</li>';
+    htmlContent += `<div class="movies__container">`;
+    htmlContent += `<img class="movies__container--img"src="${movies[i].image}" title="${movies[i].name}" alt="${movies[i].name}">`;
+    htmlContent += `<h3 class="movies__container--name">${movies[i].name}</h3>`;
+    htmlContent += `</div>`;
+    htmlContent += `</li>`;
   }
   listMovies.innerHTML = htmlContent;
   console.log(movies);
@@ -57,7 +59,6 @@ function getServerData() {
     .then(function (getShow) {
       createListMovies(getShow);
       paintMovies();
-      console.log('Recogiendo movies:' + movies);
     })
     .catch(function (err) {
       console.log('Error al traer los datos del servidor', err);
