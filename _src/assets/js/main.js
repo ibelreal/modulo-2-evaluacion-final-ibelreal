@@ -53,39 +53,31 @@ function paintshows() {
   listShows.innerHTML = htmlContent;
 }
 
-//This function is to check if the movie is favorite
+//This function is to check if the show is a favorite and add or remove it
 function toggleFavorites(ev) {
   let findFav = false;
   const clickedId = parseInt(ev.currentTarget.id);
   if (showsFavorites.length === 0) {
     showsFavorites.push({ id: 0, image: `${shows[clickedId].image}`, name: `${shows[clickedId].name}` });
-    console.log('Se ha añadido en Favs 0');
   }
 
   else {
     for (let i = 0; i < showsFavorites.length; i++) {
       if (shows[clickedId].name === showsFavorites[i].name) {
         showsFavorites.splice(i, 1);
-        console.log('Se ha eliminado: ' + i + 'Favoritos es: ' + showsFavorites);
         findFav = true;
-        console.log('Ha encontrado a favorito');
       }
-
     }
     if (findFav === false) {
       showsFavorites.push({ id: showsFavorites.length, image: `${shows[clickedId].image}`, name: `${shows[clickedId].name}` });
-      console.log('Favorito se ha añadido');
     }
   }
-
-  console.log('La longitud es ' + showsFavorites.length);
-  console.log('Los favs son: ' + showsFavorites);
   paintshows();
   listenshows();
 }
 
 
-//This function is going to listen in case you click a movie
+//This function is going to listen in case you click a show
 function listenshows() {
   const showsItems = document.querySelectorAll('.shows__item');
   for (const showsItem of showsItems) {
