@@ -93,9 +93,13 @@ function toggleFavorites(ev) {
 //This function is going to listen in case you click a show
 function listenshows() {
   const showsItems = document.querySelectorAll('.shows__item');
+  //const showsItemsFavs = document.querySelectorAll('.shows__item__fav');
   for (const showsItem of showsItems) {
     showsItem.addEventListener('click', toggleFavorites);
   }
+  // for (const showsItem of showsItemsFavs) {
+  //   showsItem.addEventListener('click', toggleFavorites);
+  // }
 }
 
 //function of Server Data
