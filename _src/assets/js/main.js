@@ -48,6 +48,7 @@ function paintshows() {
   let htmlFavorites = '';
   for (let i = 0; i < favoritesShows.length; i++) {
     htmlFavorites += `<li class="shows__item__fav" id="${[i]}">`;
+    htmlFavorites += `<span class="close__btn">&times;</span>`;
     htmlFavorites += `<div class="shows__container__fav">`;
     htmlFavorites += `<img class="shows__container__fav--img" src="${favoritesShows[i].image}" title="${favoritesShows[i].name}" alt="${favoritesShows[i].name}">`;
     htmlFavorites += `<h3 class="shows__container__fav--name">${favoritesShows[i].name}</h3>`;
@@ -64,10 +65,12 @@ function paintshows() {
   }
   listFavorites.innerHTML = htmlFavorites;
   listShows.innerHTML = htmlContent;
+  listenShows();
+  listenFavorites();
 }
 
 //This function is to check if the show is a favorite and add or remove it
-function toggleFavorites(ev) {
+function toggleShows(ev) {
   let findFav = false;
   const clickedId = parseInt(ev.currentTarget.id);
   if (favoritesShows.length === 0) {
@@ -86,20 +89,33 @@ function toggleFavorites(ev) {
   }
   setLocalStorage();
   paintshows();
-  listenshows();
+  listenShows();
+  listenFavorites();
+}
+//This function delete a favorite using a x
+function deleteFavorites(ev) {
+  const clickedIdFav = parseInt(ev.currentTarget.id);
+  favoritesShows.splice(clickedIdFav, 1);
+  setLocalStorage();
+  paintshows();
+  listenShows();
+  listenFavorites();
 }
 
 
 //This function is going to listen in case you click a show
-function listenshows() {
+function listenShows() {
   const showsItems = document.querySelectorAll('.shows__item');
-  //const showsItemsFavs = document.querySelectorAll('.shows__item__fav');
   for (const showsItem of showsItems) {
-    showsItem.addEventListener('click', toggleFavorites);
+    showsItem.addEventListener('click', toggleShows);
   }
-  // for (const showsItem of showsItemsFavs) {
-  //   showsItem.addEventListener('click', toggleFavorites);
-  // }
+}
+
+function listenFavorites() {
+  const showsItemsFavs = document.querySelectorAll('.close__btn');
+  for (const showsItem of showsItemsFavs) {
+    showsItem.addEventListener('click', deleteFavorites);
+  }
 }
 
 //function of Server Data
@@ -111,7 +127,8 @@ function getServerData() {
     .then(function (getShow) {
       createListshows(getShow);
       paintshows();
-      listenshows();
+      listenShows();
+      listenFavorites();
     })
     .catch(function (err) {
       console.log('Error al traer los datos del servidor', err);
@@ -124,6 +141,7 @@ function handler(e) {
   getServerData();
 }
 
+//To call and put Local Storage
 getLocalStorage();
 
 //Event listener of button
