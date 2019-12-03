@@ -9,6 +9,7 @@ body {
 }
 .form{
 	padding: 15px;
+	background: antiquewhite;
 }
 .title{
 	display: flex;
@@ -17,6 +18,9 @@ body {
 }
 .subtitle{
 	padding: 10px;
+	display: grid;
+	display: grid;
+	grid-row-end: none;
 }
 .format{
 	display: grid;
@@ -29,16 +33,16 @@ body {
 	}
 	&--shows{
 		display: flex;
-		flex-direction: row;
 		flex-wrap: wrap;
+		background: aquamarine ;
+	
 	}
 }
 .shows{
 	&__item{
-		background-color: aquamarine;
   	display: flex;
 		flex-direction: column;
-		width: 180px;
+		width: 200px;
 		height: 200px;
 			&__fav{
 				width: 150px;
@@ -52,14 +56,16 @@ body {
 	&__container{
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		height: 180px;
+		align-items: center;
+	
 		&--img{
-		width: 120px;
+		width: 110px;
 		}
 		&--name{
 		display: flex;
-		font-size: 20px;
+		font-size: 18px;
+		justify-content: center;
+		text-align: center;
 		}
 		&__fav{
 			display: flex;
