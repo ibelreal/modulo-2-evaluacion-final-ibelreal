@@ -21,22 +21,26 @@ function getLocalStorage() {
   if (localStorageFavorites !== null) {
     favoritesShows = localStorageFavorites;
     paintshows();
+    showNamesFavorites();
   }
 }
 
 //This function add the information of JSON to an Array
 function createListshows(list) {
   for (let i = 0; i < list.length; i++) {
+
     if (list[i].show.image === null) {
       shows[i] = {
         image: 'https://via.placeholder.com/210x295/ffffff/666666/?text=TV',
-        name: list[i].show.name
+        name: list[i].show.name,
+        days: list[i].show.schedule.days
       };
     }
     else {
       shows[i] = {
         image: list[i].show.image.medium,
-        name: list[i].show.name
+        name: list[i].show.name,
+        days: list[i].show.schedule.days
       };
     }
   }
@@ -46,9 +50,10 @@ function createListshows(list) {
 function paintshows() {
   let htmlContent = '';
   let htmlFavorites = '';
+
   for (let i = 0; i < favoritesShows.length; i++) {
     htmlFavorites += `<li class="shows__item__fav" id="${[i]}">`;
-    htmlFavorites += `<span class="close__btn">&times;</span>`;
+    htmlFavorites += `<span class="close__btn"  style="cursor:pointer">&times;</span>`;
     htmlFavorites += `<div class="shows__container__fav">`;
     htmlFavorites += `<img class="shows__container__fav--img" src="${favoritesShows[i].image}" title="${favoritesShows[i].name}" alt="${favoritesShows[i].name}">`;
     htmlFavorites += `<h3 class="shows__container__fav--name">${favoritesShows[i].name}</h3>`;
@@ -57,9 +62,10 @@ function paintshows() {
   }
   for (let i = 0; i < shows.length; i++) {
     htmlContent += `<li class="shows__item" id="${[i]}">`;
-    htmlContent += `<div class="shows__container">`;
+    htmlContent += `<div class="shows__container"  style="cursor:pointer">`;
     htmlContent += `<img class="shows__container--img"src="${shows[i].image}" title="${shows[i].name}" alt="${shows[i].name}">`;
     htmlContent += `<h3 class="shows__container--name">${shows[i].name}</h3>`;
+    htmlContent += `<p class="shows__container--days">${shows[i].days}</p>`;
     htmlContent += `</div>`;
     htmlContent += `</li>`;
   }
@@ -67,6 +73,7 @@ function paintshows() {
   listShows.innerHTML = htmlContent;
   listenShows();
   listenFavorites();
+  showNamesFavorites();
 }
 
 //This function is to check if the show is a favorite and add or remove it
@@ -101,6 +108,14 @@ function deleteFavorites(ev) {
   listenShows();
   listenFavorites();
 }
+function showMeFavorites(ev) {
+  debugger;
+  const clickedFavorite = parseInt(ev.currentTarget.id);
+  console.log(favoritesShows[clickedFavorite].name);
+  listenShows();
+  listenFavorites();
+  showNamesFavorites();
+}
 
 
 //This function is going to listen in case you click a show
@@ -115,6 +130,12 @@ function listenFavorites() {
   const showsItemsFavs = document.querySelectorAll('.close__btn');
   for (const showsItem of showsItemsFavs) {
     showsItem.addEventListener('click', deleteFavorites);
+  }
+}
+function showNamesFavorites() {
+  const showsItemsFavs = document.querySelectorAll('.shows__item__fav');
+  for (const showsItem of showsItemsFavs) {
+    showsItem.addEventListener('click', showMeFavorites);
   }
 }
 
